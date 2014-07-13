@@ -114,7 +114,7 @@ public class Polynomial {
 		Node current = firstNode;
 
 		while (current != null) {
-			System.out.printf("%+d x^%d ", current.coef, current.exp);
+			System.out.printf("%+dx^(%d) ", current.coef, current.exp);
 			current = current.nextNode;
 		}
 		System.out.println();

@@ -1,7 +1,29 @@
-
+import java.util.Scanner;
 public class Test {
 	public static void main(String args[]) {
+		Scanner input = new Scanner(System.in);
+		
 		Polynomial poly1 = new Polynomial("A");
+		String A = input.nextLine();
+		A = A.replaceAll(" ", "");
+		A = A.replaceAll("-", "+-");
+		A = A.replaceAll("\\(", "").replaceAll("\\)", "");
+		A = A.replaceAll("\\^\\+", "").replaceAll("\\^", "");
+		String[] tokens1 = A.split("\\+");
+		
+		for (int i = 0; i < tokens1.length; i++) {
+			String[] tokens2 = tokens1[i].split("[xX]");
+			if (tokens2.length == 2)
+				poly1.insert(Integer.parseInt(tokens2[0]), Integer.parseInt(tokens2[1]));
+			else {
+				if (tokens1[i].contains("[xX]"))
+					poly1.insert(Integer.parseInt(tokens2[0]), 1);
+				else
+					poly1.insert(Integer.parseInt(tokens2[0]), 0);
+			}
+		}
+		poly1.print();
+		/*
 		poly1.insert(1, 2);
 		poly1.print();		
 		poly1.insert(2, 0);
@@ -39,5 +61,6 @@ public class Test {
 		
 		result = poly1.subtract(poly2);
 		result.print();
+		*/
 	}
 }
