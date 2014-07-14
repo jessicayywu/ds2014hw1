@@ -104,19 +104,20 @@ public class Polynomial {
 		return result;
 	}
 
-	public void print() {
+	public String print() {
+		String string = "";
+		
 		if (isEmpty()) {
-			System.out.printf("Empty %s\n", name);
-			return;
+			return String.format("Empty %s\n", name);
 		}
 
-		System.out.printf("The %s is: ", name);
+		string += String.format("%s is: ", name);
 		Node current = firstNode;
 
 		while (current != null) {
-			System.out.printf("%+dx^(%d) ", current.coef, current.exp);
+			string += String.format("%+dx^(%d) ", current.coef, current.exp);
 			current = current.nextNode;
 		}
-		System.out.println();
+		return string;
 	}
 }
