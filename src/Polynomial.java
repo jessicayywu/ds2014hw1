@@ -2,11 +2,12 @@ public class Polynomial {
 	Node firstNode;
 	Node lastNode;
 	String name;
+	String tempResult = "";
 
 	public Polynomial() { 
 		this("polynomial"); 
 	}
-
+	
 	public Polynomial(String listName) {
 		name = listName;
 		firstNode = lastNode = null;
@@ -61,46 +62,42 @@ public class Polynomial {
 	public Polynomial add(Polynomial poly) {
 		Polynomial result = new Polynomial(name + "+" + poly.name);
 		
-		Node current1 = firstNode;
-		Node current2 = poly.firstNode;
+		Node current = firstNode;
 		
-		while (current1 != null) {
-			result.insert(current1.coef, current1.exp);
+		while (current != null) {
+			result.insert(current.coef, current.exp);
 			result.print();
-			current1 = current1.nextNode;
+			current = current.nextNode;
 		}
 		
-
+		current = poly.firstNode;
 		
-		while (current2 != null) {
-			result.insert(current2.coef, current2.exp);
+		while (current != null) {
+			result.insert(current.coef, current.exp);
 			result.print();
-			current2 = current2.nextNode;
+			current = current.nextNode;
 		}
-		
 		return result;
 	}
 	
 	public Polynomial subtract(Polynomial poly) {
 		Polynomial result = new Polynomial(name + "-" + poly.name);
 		
-		Node current1 = firstNode;
-		Node current2 = poly.firstNode;
-		
-		while (current1 != null) {
-			result.insert(current1.coef, current1.exp);
+		Node current = firstNode;
+	
+		while (current != null) {
+			result.insert(current.coef, current.exp);
 			result.print();
-			current1 = current1.nextNode;
+			current = current.nextNode;
 		}
 		
-
+		current = poly.firstNode;
 		
-		while (current2 != null) {
-			result.insert(-current2.coef, current2.exp);
+		while (current != null) {
+			result.insert(-current.coef, current.exp);
 			result.print();
-			current2 = current2.nextNode;
+			current = current.nextNode;
 		}
-		
 		return result;
 	}
 
@@ -111,13 +108,18 @@ public class Polynomial {
 			return String.format("Empty %s\n", name);
 		}
 
-		string += String.format("%s is: ", name);
+		string += String.format("%s = ", name);
 		Node current = firstNode;
 
 		while (current != null) {
 			string += String.format("%+dx^(%d) ", current.coef, current.exp);
 			current = current.nextNode;
 		}
+		tempResult += (string + "\n");
 		return string;
+	}
+	
+	public String getTempResult() {
+		return tempResult;
 	}
 }

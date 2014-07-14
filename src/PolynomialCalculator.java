@@ -1,7 +1,5 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import java.awt.event.*;
 import javax.swing.*;
 
 
@@ -28,13 +26,14 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 	private JTextArea jtaSteps = new JTextArea();
 	
 	public void init() {
+
 		JMenuBar jmb = new JMenuBar();
 		setJMenuBar(jmb);
 		
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic('H');
 		jmb.add(helpMenu);
-		
+
 		helpMenu.add(jmiViewHelp);
 		helpMenu.add(jmiAbout);
 		
@@ -80,7 +79,7 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 	
 	public void start() {
 		/** About */
-		
+
 		jmiAbout.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -90,7 +89,7 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 		}); // End of the inner class
 		
 		/** About */
-		
+
 		jmiViewHelp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -98,6 +97,7 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 				JOptionPane.showMessageDialog(null, help, "About", JOptionPane.PLAIN_MESSAGE);
 			} // End of the actionPerformed method
 		}); // End of the inner class
+
 		
 		jbtClear.addActionListener(this);
 		jbtAdd.addActionListener(this);
@@ -112,7 +112,7 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 		jbtSubtract.addActionListener(null);
 	}
 	
-	public void insertPoly(String text, Polynomial poly) {
+	public void insertPoly(String text, final Polynomial poly) {	
 		text = text.replaceAll(" ", "");
 		text = text.replaceAll("-", "+-");
 		text = text.replaceAll("\\(", "").replaceAll("\\)", "");
@@ -132,6 +132,7 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 					poly.insert(Integer.parseInt(tokens2[0]), 0);
 			}
 		}
+		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -141,7 +142,7 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 			jtfResult.setText("");
 			jtaSteps.setText("");
 	    }
-		if (e.getSource() == jbtAdd) {
+		if (e.getSource() == jbtAdd) {	
 			Polynomial polyA = new Polynomial("A");
 			insertPoly(jtfPolyA.getText(), polyA);
 			
@@ -149,6 +150,7 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 			insertPoly(jtfPolyB.getText(), polyB);
 			
 			Polynomial result = polyA.add(polyB);
+			if (jrbSteps.isSelected()) showSteps(result);
 			jtfResult.setText(result.print());
 	    }
 		if (e.getSource() == jbtSubtract) {
@@ -159,8 +161,28 @@ public class PolynomialCalculator extends JApplet implements ActionListener {
 			insertPoly(jtfPolyB.getText(), polyB);
 			
 			Polynomial result = polyA.subtract(polyB);
+			if (jrbSteps.isSelected()) showSteps(result);
 			jtfResult.setText(result.print());
 	    }
 	}
-
+	
+	public void showSteps(final Polynomial result) {
+		final Timer timer = new Timer(1000, null);
+		
+		timer.addActionListener(new ActionListener() {
+			String[] tokens= result.getTempResult().split("\n");
+			int i = 0;
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(i < tokens.length) {
+					jtaSteps.setText(jtaSteps.getText() + tokens[i++] + "\n");
+				}
+				else
+					timer.stop();
+			}
+		});
+	
+		timer.start();
+	}
 }
